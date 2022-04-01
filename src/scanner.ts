@@ -39,35 +39,29 @@ export async function scanner(fileName: string) {
     } else if (isNumber(c)) {
       // NUMBER
       result.push(scanNumber(nextChar, buff.buffer));
-    }
-
-    if (c === ";") {
+    } else if (c === ";") {
       // SEMI-COLON
       result.push(new ScanResult("SEMI-COLON"));
-    }
-    if (c === "=") {
+    } else if (c === "=") {
       // EQUAL
       result.push(new ScanResult("EQUAL"));
-    }
-    if (c === "-") {
+    } else if (c === "-") {
       // MINUS
       result.push(new ScanResult("MINUS"));
-    }
-    if (c === "*") {
+    } else if (c === "*") {
       // STAR
       result.push(new ScanResult("STAR"));
-    }
-    if (c === "^") {
+    } else if (c === "^") {
       // MINUS
       result.push(new ScanResult("EXPONENT"));
-    }
-    if (c === "(") {
+    } else if (c === "(") {
       // LEFT-PARENTHESES
       result.push(new ScanResult("LEFT-PARENTHESES"));
-    }
-    if (c === ")") {
+    } else if (c === ")") {
       // RIGHT-PARENTHESES
       result.push(new ScanResult("RIGHT-PARENTHESES"));
+    } else {
+      throw Error(`Invalid syntax: Invalid character ${c}`);
     }
     buff.clear();
   }
