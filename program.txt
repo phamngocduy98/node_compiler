@@ -1,0 +1,18 @@
+begin
+    int giaTri1 ;
+    int giaTri2 ;
+
+    giaTri1 = 123 ;
+    giaTri2 = 0 ;
+
+    int Tong ;
+    Tong = ( giaTri1 - giaTri2 ) * ( giaTri1 ^ giaTri2 ) - giaTri1 * 2 ;
+    print Tong ;
+
+    while Tong do
+        begin
+            giaTri1 = 2 ;
+            giaTri2 = 1 ;
+        end
+end
+
