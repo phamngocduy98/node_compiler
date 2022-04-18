@@ -1,0 +1,15 @@
+begin
+    int a;
+    int b;
+    int c;
+    int d;
+    string s;
+    s="Test";
+
+    b=1;
+    c=2;
+    d=3;
+    a=(b+c)*d;
+    print a;
+    print s;
+end
