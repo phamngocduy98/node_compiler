@@ -72,19 +72,6 @@ export const Grammar: IGrammar = {
 	// 	[Terminal.ID],
 	// ],
 
-	// remove left recursion
-	// [NonTerminal.Expr]: [
-	// 	[Terminal.NUMBER, NonTerminal.Expr_],
-	// 	[Terminal.ID, NonTerminal.Expr_],
-	// 	[Terminal.LEFT_PARENTHESES, NonTerminal.Expr, Terminal.RIGHT_PARENTHESES, NonTerminal.Expr_],
-	// ],
-	// [NonTerminal.Expr_]: [
-	// 	[Terminal.MINUS, NonTerminal.Expr, NonTerminal.Expr_],
-	// 	[Terminal.STAR, NonTerminal.Expr, NonTerminal.Expr_],
-	// 	[Terminal.EXPONENT, NonTerminal.Expr, NonTerminal.Expr_],
-	// 	[Terminal.EPSILON],
-	// ],
-
 	// Priority + Kết hợp trái / phải
 	// Expr  => Expr - Term
 	// 		| Term

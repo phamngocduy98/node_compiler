@@ -15,6 +15,6 @@ const _grammar: IGrammar = {
 
 (async () => {
 	const tokens = await scanner('program.txt');
-	// console.log(tokens);
+	// console.log(tokens.map(t => t.toString()));
 	parser(Grammar, tokens);
 })();

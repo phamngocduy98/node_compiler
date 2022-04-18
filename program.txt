@@ -1,7 +1,7 @@
 begin
     int a ; ;
     int b ; ;
-    a = ( a - b ) * c ;
+    a = ( a - b ) * c 
     while a do
     begin
         print a ;

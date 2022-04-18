@@ -61,8 +61,8 @@ export async function parser(grammar: IGrammar = Grammar, words: Token[]) {
 	let root = new ParserNode(NonTerminal.Program);
 	let parseOK = false;
 	let loop = 0;
-	let notMatchWord: Token | null = null;
-	let notMatchSymbol: Symbol | null = null;
+	let notMatchWord: Token | undefined;
+	let notMatchSymbol: Symbol | undefined;
 
 	function backtrack(wi: number, stack: StackBlock, focus: ParserNode | null, follow: Symbol[]) {
 		if (wi >= words.length || focus == null) {
@@ -71,7 +71,7 @@ export async function parser(grammar: IGrammar = Grammar, words: Token[]) {
 				parseOK = true;
 			} else {
 				notMatchWord = words[wi];
-				notMatchSymbol = focus?.symbol ?? null;
+				notMatchSymbol = focus?.symbol;
 			}
 			return;
 		}
@@ -131,10 +131,16 @@ export async function parser(grammar: IGrammar = Grammar, words: Token[]) {
 	}
 
 	backtrack(0, new StackBlock([null]), root, []);
+
 	if (parseOK) {
 		console.log('Parser OK');
+		// console.log('Parse Tree', JSON.stringify(root));
 	} else {
-		console.log(`Parser error at "${notMatchWord}" expect symbol "${notMatchSymbol}" `);
+		console.log(
+			`Parser error ${notMatchWord?.posString()} unexpected word "${notMatchWord}", expect symbol "${notMatchSymbol} (FIRST=${
+				FIRST[notMatchSymbol!]
+			})" `,
+		);
 	}
 
 	// LL1 table
