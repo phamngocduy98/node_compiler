@@ -1,3 +1,4 @@
+import {Terminal} from '../Grammar';
 import {TempBuffer} from '../utils/fileUtils';
 
 export function isSpace(char: string) {
@@ -15,4 +16,18 @@ export function isAlphabet(char: string) {
 export function isNumber(char: string) {
 	// return /[0-9]/.test(char);
 	return '0' <= char && char <= '9';
+}
+
+export function isSymbol(c: string) {
+	return (
+		[
+			Terminal.EXPONENT,
+			Terminal.LEFT_PARENTHESES,
+			Terminal.MINUS,
+			Terminal.RIGHT_PARENTHESES,
+			Terminal.SEMI_COLON,
+			Terminal.STAR,
+			Terminal.EQUAL,
+		] as string[]
+	).includes(c);
 }

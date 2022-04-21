@@ -1,9 +1,10 @@
 begin
-    int a ; ;
-    int b ; ;
-    a = ( a - b ) * c 
+    int a;;
+    int b;;
+    a= ( a - b ) * c;
+    b = a - 2;
     while a do
     begin
-        print a ;
-    end ;
+        print a;
+    end;
 end

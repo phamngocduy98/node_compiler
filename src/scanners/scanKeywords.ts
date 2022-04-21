@@ -1,8 +1,9 @@
 import {Terminal} from '../Grammar';
 import {EOF, NextCharFunc, TempBuffer} from '../utils/fileUtils';
-import {isSpace} from './is';
+import {isSpace, isSymbol} from './is';
 import {Token, TokenPosition} from './IToken';
 import {scanID} from './scanId';
+import {scanSymbol} from './scanSymbol';
 
 // "begin",
 // "end",
@@ -10,7 +11,7 @@ import {scanID} from './scanId';
 // "do",
 // "int",
 // "print",
-export function scanKeyword(pos: TokenPosition, keyword: Terminal, nextChar: NextCharFunc) {
+export function scanKeyword(pos: TokenPosition, keyword: Terminal, nextChar: NextCharFunc): Token[] {
 	// first char of keyword is already scanned => add to buff.
 	const buff = new TempBuffer(keyword[0]);
 	const kw = keyword.slice(1);
@@ -23,8 +24,13 @@ export function scanKeyword(pos: TokenPosition, keyword: Terminal, nextChar: Nex
 	}
 	c = nextChar(buff);
 	pos.col++;
+	const kwToken = new Token(pos.copy(), keyword);
 	if (c === EOF || isSpace(c)) {
-		return new Token(pos.copy(), keyword);
+		return [kwToken];
+	}
+	if (isSymbol(c)) {
+		// end;
+		return [kwToken, scanSymbol(pos, c)];
 	}
 	return scanID(pos, nextChar, buff);
 }

@@ -1,10 +1,11 @@
 import {EOF, readFileCharByChar, TempBuffer} from './utils/fileUtils';
-import {isAlphabet, isEOF, isNumber, isSpace} from './scanners/is';
+import {isAlphabet, isEOF, isNumber, isSpace, isSymbol} from './scanners/is';
 import {Token, TokenPosition} from './scanners/IToken';
 import {scanID} from './scanners/scanId';
 import {scanKeyword} from './scanners/scanKeywords';
 import {scanNumber} from './scanners/scanNumber';
 import {Terminal} from './Grammar';
+import {scanSymbol} from './scanners/scanSymbol';
 
 export async function scanner(fileName: string) {
 	const nextChar = await readFileCharByChar(fileName);
@@ -27,63 +28,35 @@ export async function scanner(fileName: string) {
 		}
 		if (c === 'b') {
 			// begin
-			result.push(scanKeyword(pos, Terminal.BEGIN, nextChar));
+			result.push(...scanKeyword(pos, Terminal.BEGIN, nextChar));
 		} else if (c === 'e') {
 			// end
-			result.push(scanKeyword(pos, Terminal.END, nextChar));
+			result.push(...scanKeyword(pos, Terminal.END, nextChar));
 		} else if (c === 'p') {
 			// print
-			result.push(scanKeyword(pos, Terminal.PRINT, nextChar));
+			result.push(...scanKeyword(pos, Terminal.PRINT, nextChar));
 		} else if (c === 'i') {
 			// int
-			result.push(scanKeyword(pos, Terminal.INT, nextChar));
+			result.push(...scanKeyword(pos, Terminal.INT, nextChar));
 		} else if (c === 'w') {
 			// while
-			result.push(scanKeyword(pos, Terminal.WHILE, nextChar));
+			result.push(...scanKeyword(pos, Terminal.WHILE, nextChar));
 		} else if (c === 'd') {
 			// do
-			result.push(scanKeyword(pos, Terminal.DO, nextChar));
+			result.push(...scanKeyword(pos, Terminal.DO, nextChar));
 		} else if (isAlphabet(c)) {
 			// ID
-			result.push(scanID(pos, nextChar, buff));
+			result.push(...scanID(pos, nextChar, buff));
 		} else if (isNumber(c)) {
 			// NUMBER
-			result.push(scanNumber(pos, nextChar, buff.buffer));
+			result.push(...scanNumber(pos, nextChar, buff.buffer));
 		} else if (c === ';') {
 			// SEMI-COLON
 			const _pos = pos.copy();
 			_pos.col++;
 			result.push(new Token(_pos, Terminal.SEMI_COLON));
-		} else if (c === '=') {
-			// EQUAL
-			const _pos = pos.copy();
-			_pos.col++;
-			result.push(new Token(_pos, Terminal.EQUAL));
-		} else if (c === '-') {
-			// MINUS
-			const _pos = pos.copy();
-			_pos.col++;
-			result.push(new Token(_pos, Terminal.MINUS));
-		} else if (c === '*') {
-			// STAR
-			const _pos = pos.copy();
-			_pos.col++;
-			result.push(new Token(_pos, Terminal.STAR));
-		} else if (c === '^') {
-			// MINUS
-			const _pos = pos.copy();
-			_pos.col++;
-			result.push(new Token(_pos, Terminal.EXPONENT));
-		} else if (c === '(') {
-			// LEFT-PARENTHESES
-			const _pos = pos.copy();
-			_pos.col++;
-			result.push(new Token(_pos, Terminal.LEFT_PARENTHESES));
-		} else if (c === ')') {
-			// RIGHT-PARENTHESES
-			const _pos = pos.copy();
-			_pos.col++;
-			result.push(new Token(_pos, Terminal.RIGHT_PARENTHESES));
+		} else if (isSymbol(c)) {
+			result.push(scanSymbol(pos, c));
 		} else {
 			throw Error(`Invalid syntax: Invalid character ${c}`);
 		}
